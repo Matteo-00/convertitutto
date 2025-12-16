@@ -2,31 +2,38 @@
 <html lang="it">
 <head>
   <meta charset="UTF-8">
+  <title>ConvertiTutto – Convertitori online sicuri</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Converti immagini e Base64 direttamente nel tuo browser. Nessun file caricato.">
 
-  <title>ConvertiTutto – Convertitore immagini e Base64</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <header class="hero">
   <h1>ConvertiTutto</h1>
-  <p>Scegli cosa vuoi convertire</p>
+  <p>Converti file e testi direttamente nel tuo browser</p>
+  <span class="badge">🔒 Nessun file viene caricato</span>
 </header>
 
-<nav class="menu">
-  <button onclick="showSection('img')">🖼 Immagini</button>
-  <button onclick="showSection('base64')">🔄 Base64</button>
-</nav>
+<section class="chooser">
+  <div class="tool" onclick="openTool('imgTool')">🖼<br>Immagini</div>
+  <div class="tool" onclick="openTool('b64Tool')">🔄<br>Base64</div>
+  <div class="tool" onclick="openTool('textTool')">✍️<br>Testo</div>
+</section>
 
 <main>
 
 <!-- IMMAGINI -->
-<section id="img" class="card hidden">
-  <h2>Conversione immagini</h2>
+<section id="imgTool" class="card hidden">
+  <h2>Convertitore di immagini</h2>
 
-  <input type="file" id="imgInput" accept="image/*">
+  <div class="drop" id="dropZone">
+    Trascina qui un’immagine o clicca
+    <input type="file" id="imgInput" accept="image/*" hidden>
+  </div>
 
+  <label>Formato di destinazione</label>
   <select id="imgFormat">
     <option value="image/jpeg">JPG</option>
     <option value="image/png">PNG</option>
@@ -36,18 +43,17 @@
   <label>Qualità</label>
   <input type="range" id="quality" min="0.1" max="1" step="0.1" value="0.9">
 
-  <button onclick="convertImage()">Converti immagine</button>
+  <button onclick="convertImage()">Converti</button>
 
   <div id="loading" class="loading hidden">⏳ Conversione in corso...</div>
-
   <div id="imgResult"></div>
 </section>
 
 <!-- BASE64 -->
-<section id="base64" class="card hidden">
+<section id="b64Tool" class="card hidden">
   <h2>Base64 ⇄ Immagine</h2>
 
-  <textarea id="b64input" placeholder="Incolla Base64"></textarea>
+  <textarea id="b64input" placeholder="Incolla Base64 qui"></textarea>
   <button onclick="base64ToImage()">Base64 → Immagine</button>
 
   <div id="b64preview"></div>
@@ -58,10 +64,38 @@
   <textarea id="b64output" placeholder="Risultato Base64"></textarea>
 </section>
 
+<!-- TESTO -->
+<section id="textTool" class="card hidden">
+  <h2>Testo ⇄ Base64</h2>
+
+  <textarea id="textInput" placeholder="Scrivi qui"></textarea>
+
+  <button onclick="textToBase64()">Testo → Base64</button>
+  <button onclick="base64ToText()">Base64 → Testo</button>
+
+  <textarea id="textOutput" placeholder="Risultato"></textarea>
+</section>
+
 </main>
 
+<!-- STATISTICHE -->
+<section class="stats">
+  <div class="stat">
+    <span id="filesCount">0</span>
+    <small>File convertiti</small>
+  </div>
+  <div class="stat">
+    <span id="mbCount">0</span>
+    <small>MB processati</small>
+  </div>
+  <div class="stat">
+    <span id="convCount">0</span>
+    <small>Conversioni totali</small>
+  </div>
+</section>
+
 <footer>
-  Tutto avviene nel tuo browser – nessun file viene caricato
+  © ConvertiTutto – Tutto avviene localmente nel tuo browser
 </footer>
 
 <script src="script.js"></script>
