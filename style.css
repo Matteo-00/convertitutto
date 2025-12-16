@@ -1,27 +1,34 @@
-* {
-  box-sizing: border-box;
-}
-
 body {
   margin: 0;
   font-family: Arial, sans-serif;
-  background: linear-gradient(180deg, #f5f7ff, #eef2ff);
+  background: linear-gradient(180deg,#f5f7ff,#eef2ff);
   color: #1f2937;
 }
 
 .hero {
   text-align: center;
-  padding: 60px 20px;
+  padding: 50px 20px;
 }
 
 .hero h1 {
-  font-size: 2.8rem;
+  font-size: 2.6rem;
   color: #4f46e5;
 }
 
-.hero p {
-  font-size: 1.1rem;
-  opacity: 0.8;
+.menu {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-bottom: 30px;
+}
+
+.menu button {
+  padding: 12px 20px;
+  border-radius: 20px;
+  border: none;
+  background: #4f46e5;
+  color: white;
+  cursor: pointer;
 }
 
 main {
@@ -33,62 +40,39 @@ main {
 .card {
   background: white;
   padding: 25px;
-  margin-bottom: 30px;
   border-radius: 16px;
-  box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+  box-shadow: 0 15px 30px rgba(0,0,0,.1);
 }
 
-.card h2 {
-  margin-top: 0;
+.hidden {
+  display: none;
 }
 
-textarea,
-input {
+textarea, input, select {
   width: 100%;
-  padding: 12px;
   margin: 8px 0;
-  border-radius: 10px;
-  border: 1px solid #ddd;
-  font-size: 1rem;
+  padding: 10px;
 }
 
 button {
-  background: #4f46e5;
-  color: white;
-  border: none;
-  padding: 12px 18px;
-  border-radius: 10px;
-  margin: 6px 6px 6px 0;
-  cursor: pointer;
+  margin-top: 10px;
 }
 
-button:hover {
-  opacity: 0.9;
-}
-
-.drop-zone {
-  border: 2px dashed #4f46e5;
-  border-radius: 14px;
-  padding: 30px;
-  text-align: center;
+.loading {
   margin-top: 15px;
-  cursor: pointer;
-  background: #f4f6ff;
-}
-
-.drop-zone.dragover {
-  background: #e0e7ff;
+  font-weight: bold;
+  color: #4f46e5;
 }
 
 img {
   max-width: 100%;
-  border-radius: 12px;
-  margin-top: 10px;
+  margin-top: 15px;
+  border-radius: 10px;
 }
 
 footer {
   text-align: center;
-  padding: 30px;
-  font-size: 0.9rem;
-  opacity: 0.7;
+  padding: 25px;
+  font-size: .9rem;
+  opacity: .7;
 }
