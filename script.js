@@ -1,68 +1,50 @@
-document.addEventListener("DOMContentLoaded", () => {
+function showSection(id) {
+  document.querySelectorAll("section").forEach(s => s.classList.add("hidden"));
+  document.getElementById(id).classList.remove("hidden");
+}
 
-  const b64input = document.getElementById("b64input");
-  const b64output = document.getElementById("b64output");
-  const imgPreview = document.getElementById("imgPreview");
+/* ===== BASE64 ===== */
+function base64ToImage() {
+  const val = b64input.value.trim();
+  if (!val) return;
+  b64preview.innerHTML = `<img src="${val.startsWith("data") ? val : "data:image/png;base64," + val}">`;
+}
 
-  const imgFile = document.getElementById("imgFile");
-  const dropZone = document.getElementById("dropZone");
+function imageToBase64() {
+  const file = imgFile.files[0];
+  if (!file) return;
+  const r = new FileReader();
+  r.onload = () => b64output.value = r.result;
+  r.readAsDataURL(file);
+}
 
-  const textInput = document.getElementById("textInput");
-  const textOutput = document.getElementById("textOutput");
-  const charCount = document.getElementById("charCount");
+/* ===== CONVERTI IMMAGINE ===== */
+function convertImage() {
+  const file = imgInput.files[0];
+  if (!file) return;
 
-  // Base64 → Immagine
-  window.base64ToImage = function () {
-    const val = b64input.value.trim();
-    if (!val) return;
-    imgPreview.innerHTML = `<img src="${val.startsWith("data") ? val : "data:image/png;base64," + val}">`;
+  loading.classList.remove("hidden");
+  imgResult.innerHTML = "";
+
+  const reader = new FileReader();
+  const img = new Image();
+
+  reader.onload = () => {
+    img.onload = () => {
+      const canvas = document.createElement("canvas");
+      canvas.width = img.width;
+      canvas.height = img.height;
+      canvas.getContext("2d").drawImage(img,0,0);
+
+      const url = canvas.toDataURL(imgFormat.value, quality.value);
+
+      loading.classList.add("hidden");
+      imgResult.innerHTML = `
+        <img src="${url}">
+        <a href="${url}" download="convertito">⬇ Scarica immagine</a>
+      `;
+    };
+    img.src = reader.result;
   };
-
-  // Immagine → Base64
-  window.imageToBase64 = function () {
-    const file = imgFile.files[0];
-    if (!file) return;
-
-    const reader = new FileReader();
-    reader.onload = () => b64output.value = reader.result;
-    reader.readAsDataURL(file);
-  };
-
-  // Testo → Base64
-  window.textToBase64 = function () {
-    textOutput.value = btoa(unescape(encodeURIComponent(textInput.value)));
-  };
-
-  // Base64 → Testo
-  window.base64ToText = function () {
-    try {
-      textOutput.value = decodeURIComponent(escape(atob(textInput.value)));
-    } catch {
-      textOutput.value = "Base64 non valido";
-    }
-  };
-
-  // Conta caratteri
-  textInput.addEventListener("input", () => {
-    charCount.innerText = "Caratteri: " + textInput.value.length;
-  });
-
-  // Drag & Drop
-  dropZone.onclick = () => imgFile.click();
-
-  dropZone.addEventListener("dragover", e => {
-    e.preventDefault();
-    dropZone.classList.add("dragover");
-  });
-
-  dropZone.addEventListener("dragleave", () => {
-    dropZone.classList.remove("dragover");
-  });
-
-  dropZone.addEventListener("drop", e => {
-    e.preventDefault();
-    dropZone.classList.remove("dragover");
-    imgFile.files = e.dataTransfer.files;
-  });
-
-});
+  reader.readAsDataURL(file);
+}
