@@ -1,67 +1,68 @@
-const q = document.getElementById("quality");
-if (q) q.oninput = () => document.getElementById("qval").innerText = q.value;
+document.addEventListener("DOMContentLoaded", () => {
 
-function base64ToImage() {
-  const val = b64input.value.trim();
-  imgPreview.innerHTML = val ? `<img src="${val.startsWith("data") ? val : "data:image/png;base64,"+val}">` : "";
-}
+  const b64input = document.getElementById("b64input");
+  const b64output = document.getElementById("b64output");
+  const imgPreview = document.getElementById("imgPreview");
 
-function imageToBase64() {
-  const f = imgFile.files[0];
-  if (!f) return;
-  const r = new FileReader();
-  r.onload = () => b64output.value = r.result;
-  r.readAsDataURL(f);
-}
+  const imgFile = document.getElementById("imgFile");
+  const dropZone = document.getElementById("dropZone");
 
-function convertImage() {
-  const f = imgConvert.files[0];
-  if (!f) return;
-  const r = new FileReader();
-  const img = new Image();
+  const textInput = document.getElementById("textInput");
+  const textOutput = document.getElementById("textOutput");
+  const charCount = document.getElementById("charCount");
 
-  r.onload = () => {
-    img.onload = () => {
-      const c = document.createElement("canvas");
-      c.width = img.width;
-      c.height = img.height;
-      c.getContext("2d").drawImage(img,0,0);
-      const url = c.toDataURL(imgFormat.value, q.value);
-      downloadImg.href = url;
-      downloadImg.download = "convertito";
-      downloadImg.textContent = "Scarica immagine";
-    };
-    img.src = r.result;
+  // Base64 → Immagine
+  window.base64ToImage = function () {
+    const val = b64input.value.trim();
+    if (!val) return;
+    imgPreview.innerHTML = `<img src="${val.startsWith("data") ? val : "data:image/png;base64," + val}">`;
   };
-  r.readAsDataURL(f);
-}
 
-function textToBase64() {
-  textOutput.value = btoa(unescape(encodeURIComponent(textInput.value)));
-}
+  // Immagine → Base64
+  window.imageToBase64 = function () {
+    const file = imgFile.files[0];
+    if (!file) return;
 
-function base64ToText() {
-  try {
-    textOutput.value = decodeURIComponent(escape(atob(textInput.value)));
-  } catch {
-    textOutput.value = "Base64 non valido";
-  }
-}
+    const reader = new FileReader();
+    reader.onload = () => b64output.value = reader.result;
+    reader.readAsDataURL(file);
+  };
 
-function urlEncode() {
-  textOutput.value = encodeURIComponent(textInput.value);
-}
+  // Testo → Base64
+  window.textToBase64 = function () {
+    textOutput.value = btoa(unescape(encodeURIComponent(textInput.value)));
+  };
 
-function urlDecode() {
-  textOutput.value = decodeURIComponent(textInput.value);
-}
+  // Base64 → Testo
+  window.base64ToText = function () {
+    try {
+      textOutput.value = decodeURIComponent(escape(atob(textInput.value)));
+    } catch {
+      textOutput.value = "Base64 non valido";
+    }
+  };
 
-async function generateHash() {
-  const data = new TextEncoder().encode(hashInput.value);
-  const hash = await crypto.subtle.digest("SHA-256", data);
-  hashOutput.value = Array.from(new Uint8Array(hash)).map(b=>b.toString(16).padStart(2,"0")).join("");
-}
+  // Conta caratteri
+  textInput.addEventListener("input", () => {
+    charCount.innerText = "Caratteri: " + textInput.value.length;
+  });
 
-textInput?.addEventListener("input", () => {
-  charCount.innerText = "Caratteri: " + textInput.value.length;
+  // Drag & Drop
+  dropZone.onclick = () => imgFile.click();
+
+  dropZone.addEventListener("dragover", e => {
+    e.preventDefault();
+    dropZone.classList.add("dragover");
+  });
+
+  dropZone.addEventListener("dragleave", () => {
+    dropZone.classList.remove("dragover");
+  });
+
+  dropZone.addEventListener("drop", e => {
+    e.preventDefault();
+    dropZone.classList.remove("dragover");
+    imgFile.files = e.dataTransfer.files;
+  });
+
 });
