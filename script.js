@@ -1,50 +1,102 @@
-function showSection(id) {
-  document.querySelectorAll("section").forEach(s => s.classList.add("hidden"));
+/* ===== NAVIGAZIONE ===== */
+function openTool(id) {
+  document.querySelectorAll("main section").forEach(s => s.classList.add("hidden"));
   document.getElementById(id).classList.remove("hidden");
 }
 
-/* ===== BASE64 ===== */
-function base64ToImage() {
-  const val = b64input.value.trim();
-  if (!val) return;
-  b64preview.innerHTML = `<img src="${val.startsWith("data") ? val : "data:image/png;base64," + val}">`;
+/* ===== STATISTICHE ===== */
+let stats = JSON.parse(localStorage.getItem("stats")) || {
+  files: 0,
+  mb: 0,
+  conv: 0
+};
+
+function updateStatsUI() {
+  filesCount.textContent = stats.files;
+  mbCount.textContent = stats.mb.toFixed(2);
+  convCount.textContent = stats.conv;
 }
 
-function imageToBase64() {
-  const file = imgFile.files[0];
-  if (!file) return;
-  const r = new FileReader();
-  r.onload = () => b64output.value = r.result;
-  r.readAsDataURL(file);
+function addStats(size) {
+  stats.files++;
+  stats.mb += size / (1024 * 1024);
+  stats.conv++;
+  localStorage.setItem("stats", JSON.stringify(stats));
+  updateStatsUI();
 }
 
-/* ===== CONVERTI IMMAGINE ===== */
+updateStatsUI();
+
+/* ===== DRAG & DROP ===== */
+dropZone.onclick = () => imgInput.click();
+dropZone.ondragover = e => e.preventDefault();
+dropZone.ondrop = e => {
+  e.preventDefault();
+  imgInput.files = e.dataTransfer.files;
+};
+
+/* ===== CONVERTI IMMAGINI ===== */
 function convertImage() {
-  const file = imgInput.files[0];
-  if (!file) return;
+  const f = imgInput.files[0];
+  if (!f) return;
 
   loading.classList.remove("hidden");
   imgResult.innerHTML = "";
 
-  const reader = new FileReader();
+  const r = new FileReader();
   const img = new Image();
 
-  reader.onload = () => {
+  r.onload = () => {
     img.onload = () => {
-      const canvas = document.createElement("canvas");
-      canvas.width = img.width;
-      canvas.height = img.height;
-      canvas.getContext("2d").drawImage(img,0,0);
+      const c = document.createElement("canvas");
+      c.width = img.width;
+      c.height = img.height;
+      c.getContext("2d").drawImage(img, 0, 0);
 
-      const url = canvas.toDataURL(imgFormat.value, quality.value);
+      const url = c.toDataURL(imgFormat.value, quality.value);
 
       loading.classList.add("hidden");
       imgResult.innerHTML = `
         <img src="${url}">
         <a href="${url}" download="convertito">⬇ Scarica immagine</a>
       `;
+
+      addStats(f.size);
     };
-    img.src = reader.result;
+    img.src = r.result;
   };
-  reader.readAsDataURL(file);
+  r.readAsDataURL(f);
+}
+
+/* ===== BASE64 ===== */
+function base64ToImage() {
+  if (!b64input.value) return;
+  b64preview.innerHTML = `<img src="${b64input.value}">`;
+}
+
+function imageToBase64() {
+  const f = imgFile.files[0];
+  if (!f) return;
+
+  const r = new FileReader();
+  r.onload = () => {
+    b64output.value = r.result;
+    addStats(f.size);
+  };
+  r.readAsDataURL(f);
+}
+
+/* ===== TESTO ===== */
+function textToBase64() {
+  textOutput.value = btoa(unescape(encodeURIComponent(textInput.value)));
+  addStats(textInput.value.length);
+}
+
+function base64ToText() {
+  try {
+    textOutput.value = decodeURIComponent(escape(atob(textInput.value)));
+    addStats(textInput.value.length);
+  } catch {
+    textOutput.value = "Base64 non valido";
+  }
 }
