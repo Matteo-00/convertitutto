@@ -1,34 +1,50 @@
 body {
   margin: 0;
-  font-family: Arial, sans-serif;
-  background: linear-gradient(180deg,#f5f7ff,#eef2ff);
+  font-family: system-ui, sans-serif;
+  background: linear-gradient(180deg,#f8f9ff,#eef2ff);
   color: #1f2937;
 }
 
 .hero {
   text-align: center;
-  padding: 50px 20px;
+  padding: 60px 20px;
 }
 
 .hero h1 {
-  font-size: 2.6rem;
+  font-size: 3rem;
   color: #4f46e5;
 }
 
-.menu {
-  display: flex;
-  justify-content: center;
-  gap: 15px;
-  margin-bottom: 30px;
+.badge {
+  display: inline-block;
+  margin-top: 10px;
+  padding: 6px 14px;
+  background: #e0e7ff;
+  border-radius: 20px;
+  font-size: .9rem;
 }
 
-.menu button {
-  padding: 12px 20px;
-  border-radius: 20px;
-  border: none;
-  background: #4f46e5;
-  color: white;
+.chooser {
+  display: grid;
+  grid-template-columns: repeat(auto-fit,minmax(120px,1fr));
+  gap: 20px;
+  max-width: 700px;
+  margin: auto;
+  padding: 20px;
+}
+
+.tool {
+  background: white;
+  border-radius: 18px;
+  padding: 25px;
+  text-align: center;
   cursor: pointer;
+  box-shadow: 0 15px 30px rgba(0,0,0,.1);
+  transition: transform .2s;
+}
+
+.tool:hover {
+  transform: translateY(-5px);
 }
 
 main {
@@ -40,39 +56,79 @@ main {
 .card {
   background: white;
   padding: 25px;
-  border-radius: 16px;
-  box-shadow: 0 15px 30px rgba(0,0,0,.1);
+  border-radius: 20px;
+  box-shadow: 0 20px 40px rgba(0,0,0,.12);
 }
 
 .hidden {
   display: none;
 }
 
+.drop {
+  border: 2px dashed #c7d2fe;
+  padding: 30px;
+  border-radius: 15px;
+  text-align: center;
+  margin-bottom: 15px;
+  cursor: pointer;
+}
+
 textarea, input, select {
   width: 100%;
-  margin: 8px 0;
-  padding: 10px;
+  margin: 10px 0;
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid #d1d5db;
 }
 
 button {
-  margin-top: 10px;
+  background: #4f46e5;
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 20px;
+  cursor: pointer;
 }
 
 .loading {
   margin-top: 15px;
   font-weight: bold;
-  color: #4f46e5;
 }
 
 img {
   max-width: 100%;
   margin-top: 15px;
-  border-radius: 10px;
+  border-radius: 12px;
+}
+
+.stats {
+  max-width: 800px;
+  margin: 60px auto;
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  padding: 30px;
+  background: linear-gradient(135deg,#eef2ff,#e0e7ff);
+  border-radius: 25px;
+  box-shadow: 0 20px 40px rgba(0,0,0,.1);
+}
+
+.stat {
+  text-align: center;
+}
+
+.stat span {
+  font-size: 2.2rem;
+  font-weight: bold;
+  color: #4f46e5;
+}
+
+.stat small {
+  opacity: .7;
 }
 
 footer {
   text-align: center;
-  padding: 25px;
-  font-size: .9rem;
-  opacity: .7;
+  padding: 30px;
+  opacity: .6;
 }
