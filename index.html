@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>ConvertiTutto – Convertitore universale online gratuito</title>
+  <meta name="description" content="Converti immagini, Base64, testo e JSON direttamente dal browser. Nessun upload, nessun dato salvato. Gratis.">
+  <meta name="robots" content="index, follow">
+
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+<header>
+  <h1>ConvertiTutto</h1>
+  <p>Convertitore universale • 100% browser • Gratis</p>
+</header>
+
+<main>
+
+  <!-- BASE64 / IMAGE -->
+  <section class="card">
+    <h2>🖼 Base64 ⇄ Immagine</h2>
+
+    <textarea id="base64Input" placeholder="Incolla Base64"></textarea>
+    <button onclick="base64ToImage()">Base64 → Immagine</button>
+    <div id="imageResult"></div>
+
+    <input type="file" id="imageInput" accept="image/*">
+    <button onclick="imageToBase64()">Immagine → Base64</button>
+    <textarea id="base64Output" placeholder="Risultato Base64"></textarea>
+  </section>
+
+  <!-- IMAGE CONVERSIONS -->
+  <section class="card">
+    <h2>🎨 Conversioni immagini</h2>
+    <input type="file" id="imgConvert" accept="image/*">
+    <select id="format">
+      <option value="image/png">PNG</option>
+      <option value="image/jpeg">JPG</option>
+      <option value="image/webp">WEBP</option>
+    </select>
+    <button onclick="convertImage()">Converti formato</button>
+    <a id="downloadImg"></a>
+  </section>
+
+  <!-- RESIZE -->
+  <section class="card">
+    <h2>📐 Resize immagini</h2>
+    <input type="file" id="resizeInput" accept="image/*">
+    <input type="number" id="width" placeholder="Larghezza px">
+    <input type="number" id="height" placeholder="Altezza px">
+    <button onclick="resizeImage()">Ridimensiona</button>
+    <a id="resizeDownload"></a>
+  </section>
+
+  <!-- TEXT / BASE64 -->
+  <section class="card">
+    <h2>📝 Testo ⇄ Base64</h2>
+    <textarea id="textInput" placeholder="Testo"></textarea>
+    <button onclick="textToBase64()">Testo → Base64</button>
+    <button onclick="base64ToText()">Base64 → Testo</button>
+    <textarea id="textOutput" placeholder="Risultato"></textarea>
+  </section>
+
+  <!-- JSON -->
+  <section class="card">
+    <h2>🔧 JSON ⇄ Base64</h2>
+    <textarea id="jsonInput" placeholder='{"chiave":"valore"}'></textarea>
+    <button onclick="jsonToBase64()">JSON → Base64</button>
+    <button onclick="base64ToJson()">Base64 → JSON</button>
+    <textarea id="jsonOutput" placeholder="Risultato"></textarea>
+  </section>
+
+  <section class="info">
+    <p>🔒 Tutto avviene localmente nel tuo browser. Nessun file viene caricato.</p>
+  </section>
+
+</main>
+
+<footer>
+  © ConvertiTutto
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
