@@ -4,54 +4,64 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>ConvertiTutto – Convertitore online gratuito</title>
-  <meta name="description" content="Converti immagini, Base64 e testo direttamente dal browser. Gratis, veloce e senza upload.">
-
+  <title>ConvertiTutto – Convertitore immagini e Base64</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <header class="hero">
   <h1>ConvertiTutto</h1>
-  <p>Convertitore universale online • Gratis • Senza upload</p>
+  <p>Scegli cosa vuoi convertire</p>
 </header>
+
+<nav class="menu">
+  <button onclick="showSection('img')">🖼 Immagini</button>
+  <button onclick="showSection('base64')">🔄 Base64</button>
+</nav>
 
 <main>
 
-  <!-- BASE64 -->
-  <section class="card">
-    <h2>🔄 Base64 ⇄ Immagine</h2>
+<!-- IMMAGINI -->
+<section id="img" class="card hidden">
+  <h2>Conversione immagini</h2>
 
-    <textarea id="b64input" placeholder="Incolla qui Base64"></textarea>
-    <button onclick="base64ToImage()">Base64 → Immagine</button>
+  <input type="file" id="imgInput" accept="image/*">
 
-    <div id="imgPreview"></div>
+  <select id="imgFormat">
+    <option value="image/jpeg">JPG</option>
+    <option value="image/png">PNG</option>
+    <option value="image/webp">WEBP</option>
+  </select>
 
-    <div class="drop-zone" id="dropZone">
-      📂 Trascina qui un'immagine<br>oppure tocca per selezionare
-      <input type="file" id="imgFile" accept="image/*" hidden>
-    </div>
+  <label>Qualità</label>
+  <input type="range" id="quality" min="0.1" max="1" step="0.1" value="0.9">
 
-    <button onclick="imageToBase64()">Immagine → Base64</button>
-    <textarea id="b64output" placeholder="Risultato Base64"></textarea>
-  </section>
+  <button onclick="convertImage()">Converti immagine</button>
 
-  <!-- TESTO -->
-  <section class="card">
-    <h2>📝 Testo ⇄ Base64</h2>
+  <div id="loading" class="loading hidden">⏳ Conversione in corso...</div>
 
-    <textarea id="textInput" placeholder="Scrivi testo"></textarea>
-    <button onclick="textToBase64()">Testo → Base64</button>
-    <button onclick="base64ToText()">Base64 → Testo</button>
+  <div id="imgResult"></div>
+</section>
 
-    <textarea id="textOutput" placeholder="Risultato"></textarea>
-    <p id="charCount">Caratteri: 0</p>
-  </section>
+<!-- BASE64 -->
+<section id="base64" class="card hidden">
+  <h2>Base64 ⇄ Immagine</h2>
+
+  <textarea id="b64input" placeholder="Incolla Base64"></textarea>
+  <button onclick="base64ToImage()">Base64 → Immagine</button>
+
+  <div id="b64preview"></div>
+
+  <input type="file" id="imgFile" accept="image/*">
+  <button onclick="imageToBase64()">Immagine → Base64</button>
+
+  <textarea id="b64output" placeholder="Risultato Base64"></textarea>
+</section>
 
 </main>
 
 <footer>
-  © ConvertiTutto – Tutto avviene nel tuo browser
+  Tutto avviene nel tuo browser – nessun file viene caricato
 </footer>
 
 <script src="script.js"></script>
