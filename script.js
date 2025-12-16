@@ -1,56 +1,39 @@
+const q = document.getElementById("quality");
+if (q) q.oninput = () => document.getElementById("qval").innerText = q.value;
+
 function base64ToImage() {
-  const input = base64Input.value.trim();
-  imageResult.innerHTML = input ? `<img src="${input.startsWith('data') ? input : 'data:image/png;base64,' + input}">` : '';
+  const val = b64input.value.trim();
+  imgPreview.innerHTML = val ? `<img src="${val.startsWith("data") ? val : "data:image/png;base64,"+val}">` : "";
 }
 
 function imageToBase64() {
-  const file = imageInput.files[0];
-  if (!file) return;
+  const f = imgFile.files[0];
+  if (!f) return;
   const r = new FileReader();
-  r.onload = () => base64Output.value = r.result;
-  r.readAsDataURL(file);
+  r.onload = () => b64output.value = r.result;
+  r.readAsDataURL(f);
 }
 
 function convertImage() {
-  const file = imgConvert.files[0];
-  if (!file) return;
-  const img = new Image();
+  const f = imgConvert.files[0];
+  if (!f) return;
   const r = new FileReader();
+  const img = new Image();
+
   r.onload = () => {
     img.onload = () => {
       const c = document.createElement("canvas");
       c.width = img.width;
       c.height = img.height;
-      c.getContext("2d").drawImage(img, 0, 0);
-      const url = c.toDataURL(format.value);
+      c.getContext("2d").drawImage(img,0,0);
+      const url = c.toDataURL(imgFormat.value, q.value);
       downloadImg.href = url;
       downloadImg.download = "convertito";
       downloadImg.textContent = "Scarica immagine";
     };
     img.src = r.result;
   };
-  r.readAsDataURL(file);
-}
-
-function resizeImage() {
-  const file = resizeInput.files[0];
-  if (!file) return;
-  const img = new Image();
-  const r = new FileReader();
-  r.onload = () => {
-    img.onload = () => {
-      const c = document.createElement("canvas");
-      c.width = width.value || img.width;
-      c.height = height.value || img.height;
-      c.getContext("2d").drawImage(img, 0, 0, c.width, c.height);
-      const url = c.toDataURL("image/png");
-      resizeDownload.href = url;
-      resizeDownload.download = "resize.png";
-      resizeDownload.textContent = "Scarica immagine";
-    };
-    img.src = r.result;
-  };
-  r.readAsDataURL(file);
+  r.readAsDataURL(f);
 }
 
 function textToBase64() {
@@ -65,18 +48,20 @@ function base64ToText() {
   }
 }
 
-function jsonToBase64() {
-  try {
-    jsonOutput.value = btoa(JSON.stringify(JSON.parse(jsonInput.value)));
-  } catch {
-    jsonOutput.value = "JSON non valido";
-  }
+function urlEncode() {
+  textOutput.value = encodeURIComponent(textInput.value);
 }
 
-function base64ToJson() {
-  try {
-    jsonOutput.value = JSON.stringify(JSON.parse(atob(jsonInput.value)), null, 2);
-  } catch {
-    jsonOutput.value = "Base64 / JSON non valido";
-  }
+function urlDecode() {
+  textOutput.value = decodeURIComponent(textInput.value);
 }
+
+async function generateHash() {
+  const data = new TextEncoder().encode(hashInput.value);
+  const hash = await crypto.subtle.digest("SHA-256", data);
+  hashOutput.value = Array.from(new Uint8Array(hash)).map(b=>b.toString(16).padStart(2,"0")).join("");
+}
+
+textInput?.addEventListener("input", () => {
+  charCount.innerText = "Caratteri: " + textInput.value.length;
+});
