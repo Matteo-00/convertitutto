@@ -4,96 +4,56 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>ConvertiTutto – Convertitore online gratuito (immagini, Base64, testo)</title>
-  <meta name="description" content="Converti immagini, Base64, testo e JSON direttamente dal browser. Nessun upload, nessun dato salvato. Gratis e veloce.">
-  <meta name="robots" content="index, follow">
+  <title>ConvertiTutto – Convertitore online gratuito</title>
+  <meta name="description" content="Converti immagini, Base64 e testo direttamente dal browser. Gratis, veloce e senza upload.">
 
-<link rel="stylesheet" href="style.css">
-
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
 
 <header class="hero">
   <h1>ConvertiTutto</h1>
-  <p>Il convertitore universale online. Veloce, gratuito, senza upload.</p>
+  <p>Convertitore universale online • Gratis • Senza upload</p>
 </header>
-
-<nav class="menu">
-  <a href="#base64">Base64</a>
-  <a href="#immagini">Immagini</a>
-  <a href="#testo">Testo</a>
-  <a href="#utility">Utility</a>
-</nav>
 
 <main>
 
-<!-- BASE64 -->
-<section id="base64" class="card">
-  <h2>🔄 Base64 ⇄ Immagine</h2>
+  <!-- BASE64 -->
+  <section class="card">
+    <h2>🔄 Base64 ⇄ Immagine</h2>
 
-  <textarea id="b64input" placeholder="Incolla Base64"></textarea>
-  <button onclick="base64ToImage()">Base64 → Immagine</button>
-  <div id="imgPreview"></div>
+    <textarea id="b64input" placeholder="Incolla qui Base64"></textarea>
+    <button onclick="base64ToImage()">Base64 → Immagine</button>
 
-  <input type="file" id="imgFile" accept="image/*">
-  <button onclick="imageToBase64()">Immagine → Base64</button>
-  <textarea id="b64output" placeholder="Risultato Base64"></textarea>
-</section>
+    <div id="imgPreview"></div>
 
-<!-- IMMAGINI -->
-<section id="immagini" class="card">
-  <h2>🖼 Conversione immagini</h2>
+    <div class="drop-zone" id="dropZone">
+      📂 Trascina qui un'immagine<br>oppure tocca per selezionare
+      <input type="file" id="imgFile" accept="image/*" hidden>
+    </div>
 
-  <input type="file" id="imgConvert" accept="image/*">
-  <select id="imgFormat">
-    <option value="image/png">PNG</option>
-    <option value="image/jpeg">JPG</option>
-    <option value="image/webp">WEBP</option>
-  </select>
+    <button onclick="imageToBase64()">Immagine → Base64</button>
+    <textarea id="b64output" placeholder="Risultato Base64"></textarea>
+  </section>
 
-  <input type="range" id="quality" min="0.1" max="1" step="0.1" value="0.9">
-  <label>Qualità: <span id="qval">0.9</span></label>
+  <!-- TESTO -->
+  <section class="card">
+    <h2>📝 Testo ⇄ Base64</h2>
 
-  <button onclick="convertImage()">Converti</button>
-  <a id="downloadImg"></a>
-</section>
+    <textarea id="textInput" placeholder="Scrivi testo"></textarea>
+    <button onclick="textToBase64()">Testo → Base64</button>
+    <button onclick="base64ToText()">Base64 → Testo</button>
 
-<!-- TESTO -->
-<section id="testo" class="card">
-  <h2>📝 Testo ⇄ Base64 / Encode</h2>
-
-  <textarea id="textInput" placeholder="Testo"></textarea>
-  <button onclick="textToBase64()">Testo → Base64</button>
-  <button onclick="base64ToText()">Base64 → Testo</button>
-  <button onclick="urlEncode()">URL Encode</button>
-  <button onclick="urlDecode()">URL Decode</button>
-
-  <textarea id="textOutput" placeholder="Risultato"></textarea>
-</section>
-
-<!-- UTILITY -->
-<section id="utility" class="card">
-  <h2>🔐 Utility</h2>
-
-  <textarea id="hashInput" placeholder="Testo per hash"></textarea>
-  <button onclick="generateHash()">SHA-256</button>
-  <input id="hashOutput" placeholder="Hash">
-
-  <p id="charCount">Caratteri: 0</p>
-</section>
-
-<section class="privacy">
-  🔒 Tutto avviene localmente nel tuo browser. Nessun dato viene caricato o salvato.
-</section>
+    <textarea id="textOutput" placeholder="Risultato"></textarea>
+    <p id="charCount">Caratteri: 0</p>
+  </section>
 
 </main>
 
 <footer>
-  © ConvertiTutto – Online tools semplici e gratuiti
+  © ConvertiTutto – Tutto avviene nel tuo browser
 </footer>
 
-<script src="js/app.js"></script>
+<script src="script.js"></script>
 </body>
 </html>
